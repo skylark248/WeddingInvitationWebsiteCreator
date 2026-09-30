@@ -1,0 +1,28 @@
+{#- Engine: the opening screen. Configure in invite.config.json → "gate".
+    gate.style: "slide" (drag a handle, default) or "tap" (one button).
+    For a completely different opening (envelope, doors, wax seal…), put your own gate.njk
+    in the theme folder: keep data-gate on the outer element and data-gate-open on whatever
+    the guest taps. See engine/README.md. -#}
+{% import "icons.njk" as icons %}
+{% if site.gateEnabled %}
+{% set g = invite.gate %}
+<div class="gate gate--{{ g.style or 'slide' }}" data-gate role="dialog" aria-modal="true" aria-label="{{ invite.share.title }}">
+  <div class="gate__content">
+    {% if g.logo %}<img class="gate__logo" src="{{ g.logo }}" alt="" draggable="false">{% endif %}
+    {% if g.title %}<p class="gate__title">{{ g.title }}</p>{% endif %}
+    {% if g.style == 'tap' %}
+    <button type="button" class="gate__button" data-gate-open>{{ g.label or 'Open the invitation' }}</button>
+    {% else %}
+    <div class="gate__track" data-gate-track>
+      <div class="gate__fill" data-gate-fill></div>
+      <span class="gate__label" data-gate-label>{{ g.label or 'Slide to open' }}{{ icons.chevrons() | safe }}</span>
+      <button type="button" class="gate__handle" data-gate-handle aria-label="{{ g.buttonLabel or 'Open the invitation' }}">
+        {% if g.handleImage %}<img src="{{ g.handleImage }}" alt="" draggable="false">{% endif %}
+      </button>
+    </div>
+    {% endif %}
+    {% if g.hint %}<p class="gate__hint">{{ g.hint }}</p>{% endif %}
+  </div>
+</div>
+<noscript><style>.gate{display:none!important}html.gate-active,html.gate-active body{overflow:auto!important}</style></noscript>
+{% endif %}

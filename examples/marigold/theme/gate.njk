@@ -1,0 +1,20 @@
+{#- Marigold theme: its own opening screen — a sealed envelope. Overrides the engine's gate.njk.
+    The engine only needs data-gate on the outer element and data-gate-open on what the guest taps.
+    Animation: .is-opening (flap opens, card rises) then .is-leaving after data-gate-delay ms. -#}
+{% if site.gateEnabled %}
+{% set a = invite.couple[0].name | first %}
+{% set b = invite.couple[1].name | first %}
+<div class="gate envelope-gate" data-gate data-gate-delay="1300" data-gate-leave="600" role="dialog" aria-modal="true" aria-label="{{ invite.share.title }}">
+  <div class="envelope">
+    <div class="envelope__back"></div>
+    <div class="envelope__card">
+      <span class="envelope__names">{{ invite.couple[0].name }} &amp; {{ invite.couple[1].name }}</span>
+    </div>
+    <div class="envelope__front"></div>
+    <div class="envelope__flap"></div>
+    <button type="button" class="envelope__seal" data-gate-open aria-label="Open the invitation">{{ a }}<span>&amp;</span>{{ b }}</button>
+  </div>
+  <p class="envelope__hint">{{ invite.gate.label }}</p>
+</div>
+<noscript><style>.gate{display:none!important}html.gate-active,html.gate-active body{overflow:auto!important}</style></noscript>
+{% endif %}

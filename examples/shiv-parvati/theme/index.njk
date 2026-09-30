@@ -1,0 +1,94 @@
+{#- Shiv–Parvati theme. Layout follows the designer's frames: hero, invitation, two event
+    sections, then countdown / venue / RSVP / closing over the Kailash scene.
+    The river runs centre → left → right → left → right via data-river-side. -#}
+{% from "event.njk" import event %}
+{% set bride = invite.couple[0] %}
+{% set groom = invite.couple[1] %}
+<!DOCTYPE html>
+<html lang="{{ invite.lang or 'en' }}">
+<head>
+  {% include "head.njk" %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Outfit:wght@400&display=swap">
+  <link rel="preload" as="image" href="assets/images/sky-stars.jpg">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  {% include "gate.njk" %}
+  {% include "audio.njk" %}
+
+  <main class="invite">
+    <canvas data-river data-river-diya-src="assets/images/lotus-diya.png" data-river-diyas="5" aria-hidden="true"></canvas>
+
+    {# ---------------------------------------------------------------- hero #}
+    <div class="hero-sky" aria-hidden="true">
+      <canvas data-starfield></canvas>
+    </div>
+    <img src="assets/images/clouds-top.png" alt="" class="hero-clouds-top">
+    <div class="moon" data-river-start>
+      <img src="assets/images/moon.png" alt="" class="moon__bg">
+      <img src="assets/images/logo-as.png" alt="{{ bride.name }} & {{ groom.name }}" class="moon__logo">
+    </div>
+    <img src="assets/images/shiva-parvati-back.png" alt="Lord Shiva and Goddess Parvati" class="hero-deities">
+    <img src="assets/images/clouds-frame.png" alt="" class="hero-clouds-bottom">
+    <div class="hero-spacer" data-river-side="center"></div>
+
+    {# ---------------------------------------------------------- invitation #}
+    <section class="invitation" data-river-side="left" data-section="invitation">
+      <img src="assets/images/clouds-top.png" alt="" class="invitation__cloud invitation__cloud--top">
+      <div class="invitation__content">
+        <p class="invitation__text" data-reveal>{{ invite.invitation.blessing | lines }}</p>
+        <p class="invitation__text invitation__text--small" data-reveal>{{ invite.invitation.lines | lines }}</p>
+
+        <h1 class="couple-name" data-reveal>{{ bride.name }}</h1>
+        <p class="lineage" data-reveal>{{ bride.lineage | lines }}</p>
+        <span class="ampersand" aria-hidden="true">&amp;</span>
+        <h1 class="couple-name" data-reveal>{{ groom.name }}</h1>
+        <p class="lineage" data-reveal>{{ groom.lineage | lines }}</p>
+      </div>
+      <img src="assets/images/clouds-top.png" alt="" class="invitation__cloud invitation__cloud--bottom">
+    </section>
+
+    {# ------------------------------------------------------------ events 1 #}
+    <section class="events events--first" data-river-side="right" data-section="events-1">
+      <div class="events__column">
+        {{ event(events | find('mehendi')) }}
+        <img src="assets/images/damru.png" alt="" class="damru">
+        {{ event(events | find('sangeet')) }}
+      </div>
+      <img src="assets/images/nandi.png" alt="Nandi" class="nandi">
+      <img src="assets/images/clouds-top.png" alt="" class="events__cloud events__cloud--right">
+    </section>
+
+    {# ------------------------------------------------------------ events 2 #}
+    <section class="events events--second" data-river-side="left" data-section="events-2">
+      <img src="assets/images/shivling.png" alt="Shivling" class="shivling">
+      <img src="assets/images/clouds-top.png" alt="" class="events__cloud events__cloud--left">
+      <div class="events__column">
+        {{ event(events | find('haldi')) }}
+        <img src="assets/images/damru.png" alt="" class="damru">
+        {{ event(events | find('wedding')) }}
+      </div>
+    </section>
+
+    {# --------------------------------------------------------------- finale #}
+    <section class="finale" data-river-side="right" data-section="finale">
+      <div class="finale__content">
+        <div data-reveal>{% include "countdown.njk" %}</div>
+        <div data-reveal>{% include "venue.njk" %}</div>
+        <div data-reveal>{% include "rsvp.njk" %}</div>
+        <div class="closing" data-reveal>
+          <p class="closing__text">{{ invite.closing.lines | lines }}</p>
+          <p class="closing__family">{{ invite.closing.family }}</p>
+        </div>
+      </div>
+      <div class="kailash">
+        <img src="assets/images/kailash-scene.png" alt="Lord Shiva and Goddess Parvati at Mount Kailash">
+      </div>
+    </section>
+  </main>
+
+  {% include "scripts.njk" %}
+</body>
+</html>

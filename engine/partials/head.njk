@@ -1,0 +1,35 @@
+{#- Engine: <head> contents. Include first inside <head>, then add theme fonts and theme.css. -#}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ invite.share.title }}</title>
+<meta name="description" content="{{ invite.share.description }}">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="{{ invite.share.themeColor or '#0A0D18' }}">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ site.url }}">
+<meta property="og:site_name" content="{{ invite.share.title }}">
+<meta property="og:title" content="{{ invite.share.title }}">
+<meta property="og:description" content="{{ invite.share.description }}">
+<meta property="og:image" content="{{ site.shareImageUrl }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ invite.share.imageAlt or invite.share.title }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ invite.share.title }}">
+<meta name="twitter:description" content="{{ invite.share.description }}">
+<meta name="twitter:image" content="{{ site.shareImageUrl }}">
+
+{% if site.hasIcons %}
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+{% endif %}
+
+<script>
+(function (r) {
+  r.classList.add('js');
+  if (/[?&]static\b/.test(location.search)) r.classList.add('is-static');
+  else if ({{ 'true' if site.gateEnabled else 'false' }}) r.classList.add('gate-active');
+})(document.documentElement);
+</script>
+<link rel="stylesheet" href="engine/engine.css">

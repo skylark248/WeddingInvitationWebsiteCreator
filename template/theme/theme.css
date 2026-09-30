@@ -1,0 +1,43 @@
+/* Starter theme — replace with the designer's look. Engine variables are listed in engine/README.md. */
+
+:root {
+  --ink: #1C3B47;
+  --gold: #B88A3B;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-script: 'Great Vibes', cursive;
+
+  --invite-bg: #FBF8F1;
+  --invite-text: var(--ink);
+  --invite-accent: var(--gold);
+  --invite-font-body: var(--font-serif);
+  --gate-bg: #1C3B47;
+  --gate-font: var(--font-serif);
+}
+
+.invite { box-shadow: 0 0 40px rgba(0, 0, 0, 0.15); }
+
+section { padding: 56px 28px; text-align: center; }
+
+.hero { padding-top: 96px; }
+.hero__kicker { font-size: 1.05rem; font-style: italic; }
+.hero__names { margin-top: 1rem; font-family: var(--font-script); font-size: 3.4rem; font-weight: normal; line-height: 1.2; color: var(--gold); }
+.hero__amp { display: block; font-size: 2.2rem; }
+
+.invitation__text { margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6; }
+.family + .family { margin-top: 1.8rem; }
+.family__name { font-family: var(--font-script); font-size: 2.6rem; font-weight: normal; color: var(--gold); }
+.family__lineage { line-height: 1.6; }
+
+.events { display: flex; flex-direction: column; gap: 3rem; }
+.event__date { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.event__month, .event__when { font-style: italic; line-height: 1.15; }
+.event__day { font-size: 3.2rem; font-weight: 600; line-height: 1; }
+.event__title { margin-top: 0.4rem; font-family: var(--font-script); font-size: 3rem; font-weight: normal; color: var(--gold); }
+.event__tagline { font-style: italic; }
+.event__divider { width: 140px; height: 1px; margin: 10px auto; background: color-mix(in srgb, var(--gold) 60%, transparent); }
+.event__venue { font-weight: 600; }
+.event__attire { font-style: italic; }
+
+.finale { display: flex; flex-direction: column; gap: 1.8rem; padding-bottom: 96px; }
+.closing { font-style: italic; }
+.closing__family { margin-top: 0.4rem; font-family: var(--font-script); font-size: 2rem; font-style: normal; color: var(--gold); }

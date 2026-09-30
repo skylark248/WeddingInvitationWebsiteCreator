@@ -1,0 +1,3 @@
+#!/bin/sh
+# Public repository: refuse to commit confidential material (see scripts/check-public.mjs).
+node scripts/check-public.mjs || exit 1

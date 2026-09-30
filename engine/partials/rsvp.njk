@@ -1,0 +1,67 @@
+{#- Engine: RSVP form. Configure in invite.config.json → "rsvp". Answers go to the Google Sheet (see rsvp/SETUP.md). -#}
+{% set r = invite.rsvp %}
+{% if r and r.enabled != false %}
+<form class="rsvp" data-rsvp novalidate
+      data-endpoint="{{ site.rsvpEndpoint }}"
+      data-invite-id="{{ invite.id }}"
+      data-thanks="{{ r.thanks or 'Thank you! Your response has been sent to the family.' }}"
+      data-error="{{ r.errorText or 'Sorry, that did not go through. Please check your internet and try again.' }}"
+      data-sending="{{ r.sendingText or 'Sending…' }}"
+      data-need-name="{{ r.needNameText or 'Please enter your name.' }}"
+      data-need-choice="{{ r.needChoiceText or 'Please choose one option.' }}"
+      data-already="{{ r.alreadyText or 'You have already replied from this phone. Send again to update your answer.' }}">
+  {% if r.title %}<h3 class="rsvp__title">{{ r.title }}</h3>{% endif %}
+
+  <label class="rsvp__field">
+    <span class="rsvp__label">{{ r.nameLabel or 'Your name' }}</span>
+    <input type="text" name="name" autocomplete="name" maxlength="120" required>
+  </label>
+
+  {% if r.askPhone %}
+  <label class="rsvp__field">
+    <span class="rsvp__label">{{ r.phoneLabel or 'Phone number (optional)' }}</span>
+    <input type="tel" name="phone" autocomplete="tel" maxlength="30">
+  </label>
+  {% endif %}
+
+  <fieldset class="rsvp__choices">
+    <legend class="sr-only">{{ r.title or 'Will you attend?' }}</legend>
+    {% for o in r.options %}
+    <label class="rsvp__option">
+      <input type="radio" name="attending" value="{{ o.value }}" data-label="{{ o.label }}"{% if o.askEvents %} data-ask-events{% endif %}{% if o.attending == false %} data-not-attending{% endif %}>
+      <span>{{ o.label }}</span>
+    </label>
+    {% endfor %}
+  </fieldset>
+
+  {% if r.askEvents %}
+  <fieldset class="rsvp__events" data-rsvp-events hidden>
+    <legend class="rsvp__label">{{ r.eventsLabel or 'Which events will you attend?' }}</legend>
+    {% for e in events %}
+    <label class="rsvp__option"><input type="checkbox" name="events" value="{{ e.name }}"><span>{{ e.name }}</span></label>
+    {% endfor %}
+  </fieldset>
+  {% endif %}
+
+  {% if r.askGuests %}
+  <label class="rsvp__field rsvp__field--guests" data-rsvp-guests>
+    <span class="rsvp__label">{{ r.guestsLabel or 'Number of guests (including you)' }}</span>
+    <input type="number" name="guests" min="1" max="{{ r.maxGuests or 10 }}" value="1" inputmode="numeric">
+  </label>
+  {% endif %}
+
+  {% if r.askMessage %}
+  <label class="rsvp__field">
+    <span class="rsvp__label">{{ r.messageLabel or 'A message for the couple (optional)' }}</span>
+    <textarea name="message" rows="3" maxlength="500"></textarea>
+  </label>
+  {% endif %}
+
+  <div class="rsvp__trap" aria-hidden="true">
+    <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+
+  <button type="submit" class="rsvp__submit">{{ r.submitLabel or 'Send RSVP' }}</button>
+  <p class="rsvp__status" data-rsvp-status role="status" aria-live="polite"></p>
+</form>
+{% endif %}

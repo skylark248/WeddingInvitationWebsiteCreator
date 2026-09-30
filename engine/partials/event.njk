@@ -1,0 +1,20 @@
+{#- Engine: one event (date row, name, tagline, venue, attire).
+    Use:  {% from "event.njk" import event %}  then  {{ event(events | find('mehendi')) }}
+    Dates, weekdays and times are worked out from the event's "start" in the config —
+    never type them by hand. -#}
+{% macro event(e, reveal=true) %}
+<article class="event" data-event="{{ e.id }}">
+  <div class="event__date"{% if reveal %} data-reveal{% endif %}>
+    <span class="event__month">{{ e.date.month }}<br>{{ e.date.year }}</span>
+    <span class="event__day"{% if reveal %} data-reveal="zoom"{% endif %}>{{ e.date.day }}</span>
+    <span class="event__when">{{ e.date.time }}<br>{{ e.date.weekday }}</span>
+  </div>
+  <h2 class="event__title"{% if reveal %} data-reveal{% endif %}>{{ e.name }}</h2>
+  {% if e.tagline %}<p class="event__tagline"{% if reveal %} data-reveal{% endif %}>{{ e.tagline }}</p>{% endif %}
+  <div class="event__divider"></div>
+  {% if e.venue %}<p class="event__venue"{% if reveal %} data-reveal{% endif %}>{{ e.venue }}</p>{% endif %}
+  {% if e.attire %}<p class="event__attire"{% if reveal %} data-reveal{% endif %}>{{ e.attireLabel or 'Attire' }}: {{ e.attire }}</p>{% endif %}
+  {% if e.note %}<p class="event__note"{% if reveal %} data-reveal{% endif %}>{{ e.note }}</p>{% endif %}
+  {% if e.mapUrl %}<a class="event__map" href="{{ e.mapUrl }}" target="_blank" rel="noopener">{{ e.mapLabel or 'Map' }}</a>{% endif %}
+</article>
+{% endmacro %}

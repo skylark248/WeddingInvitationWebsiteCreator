@@ -1,0 +1,134 @@
+{
+  "id": "shiv-parvati",
+  "site": {
+    "subdomain": "sample-shiv-parvati",
+    "domain": "rivaahdesigns.com"
+  },
+  "lang": "en",
+  "timezone": "Asia/Kolkata",
+  "timeFormat": "24h",
+  "couple": [
+    {
+      "name": "Anaya",
+      "lineage": [
+        "Grand D/o Late Mrs. Kamala Verma",
+        "& Late Mr. Hariprasad Verma",
+        "D/o Mrs. Meenakshi Verma & Mr. Rajiv Verma"
+      ]
+    },
+    {
+      "name": "Siddharth",
+      "lineage": [
+        "Grand S/o Late Mrs. Shanti Iyer",
+        "& Late Mr. Krishnan Iyer",
+        "S/o Mrs. Lakshmi Iyer & Mr. Venkat Iyer"
+      ]
+    }
+  ],
+  "invitation": {
+    "blessing": [
+      "With the blessings of",
+      "Lord Shiva and Goddess Parvati,"
+    ],
+    "lines": [
+      "we invite you and your family to",
+      "join us in celebrating the sacred",
+      "union"
+    ]
+  },
+  "events": [
+    {
+      "id": "mehendi",
+      "name": "Mehendi",
+      "tagline": "The one where it begins",
+      "start": "2027-02-18T19:30:00+05:30",
+      "venue": "Poolside, Lawn",
+      "attire": "Colorful Indian"
+    },
+    {
+      "id": "sangeet",
+      "name": "Sangeet",
+      "tagline": "The night of sparkle",
+      "start": "2027-02-18T21:00:00+05:30",
+      "venue": "Banquet Hall",
+      "attire": "Glam & Sparkle"
+    },
+    {
+      "id": "haldi",
+      "name": "Haldi",
+      "tagline": "Splash of Haldi & lots of fun",
+      "start": "2027-02-19T11:30:00+05:30",
+      "venue": "Lawnside",
+      "attire": "Hues of Sunshine"
+    },
+    {
+      "id": "wedding",
+      "name": "Wedding",
+      "tagline": "The night of promises",
+      "start": "2027-02-19T20:00:00+05:30",
+      "venue": "Royal Ground",
+      "attire": "Traditional Indian"
+    }
+  ],
+  "countdown": {
+    "event": "wedding",
+    "title": "Counting down to the big day",
+    "doneText": "The celebrations have begun!"
+  },
+  "venue": {
+    "name": "The Royal Grounds",
+    "address": "Jaipur, Rajasthan",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jaipur+Rajasthan",
+    "linkLabel": "View venue location"
+  },
+  "rsvp": {
+    "enabled": true,
+    "endpoint": "local",
+    "title": "Will you be joining us in our celebration?",
+    "options": [
+      {
+        "value": "yes_all",
+        "label": "Yes, I'll be attending all events!"
+      },
+      {
+        "value": "yes_some",
+        "label": "Yes, but only for specific events.",
+        "askEvents": true
+      },
+      {
+        "value": "no",
+        "label": "Regretfully, I won't be able to make it.",
+        "attending": false
+      }
+    ],
+    "askGuests": true,
+    "maxGuests": 10,
+    "askEvents": true,
+    "askPhone": false,
+    "askMessage": false,
+    "submitLabel": "Send RSVP"
+  },
+  "closing": {
+    "lines": [
+      "We are excited to share our celebration with you!"
+    ],
+    "family": "Verma & Iyer Families"
+  },
+  "music": {
+    "src": "assets/audio/music.mp3"
+  },
+  "gate": {
+    "enabled": true,
+    "label": "Slide Moon to Open",
+    "handleImage": "assets/images/moon.png",
+    "logo": "assets/images/logo-as.png"
+  },
+  "share": {
+    "title": "Anaya & Siddharth — Wedding Invitation (sample)",
+    "description": "A sample invitation: with the blessings of Lord Shiva and Goddess Parvati, join Anaya & Siddharth in celebrating their union. 18–19 February 2027.",
+    "image": "assets/images/share-card.jpg",
+    "imageAlt": "Sample wedding invitation",
+    "themeColor": "#0A0D18"
+  },
+  "icon": "assets/images/logo-as.png"
+}

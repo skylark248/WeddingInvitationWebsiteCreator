@@ -1,0 +1,12 @@
+{#- Engine: live countdown. Configure in invite.config.json → "countdown". -#}
+{% if countdown %}
+<div class="countdown" data-countdown="{{ countdown.target }}">
+  <p class="countdown__title">{{ countdown.title }}</p>
+  <div class="countdown__digits">
+    {% for unit in countdown.units %}
+    <div class="countdown__unit"><span class="countdown__num" data-unit="{{ unit.key }}">00</span><span class="countdown__label">{{ unit.label }}</span></div>
+    {% endfor %}
+  </div>
+  <p class="countdown__done">{{ countdown.doneText }}</p>
+</div>
+{% endif %}

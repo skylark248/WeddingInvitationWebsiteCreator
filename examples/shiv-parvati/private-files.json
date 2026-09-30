@@ -1,0 +1,21 @@
+{
+  "about": "These files belong to the designer or a client, so the public repo only has placeholders of the same size. Real copies go in private/examples/shiv-parvati/<path> (git-ignored), and the build uses them automatically. Restore them all with: npm run private-files -- shiv-parvati --from \"<folder of the original Shiv-Parvati website>\"",
+  "files": [
+    { "path": "theme/assets/images/moon.png", "original": "assets/images/moon-new.png", "what": "Moon artwork (also the gate handle)" },
+    { "path": "theme/assets/images/logo-as.png", "original": "assets/images/logo-as.png", "what": "Couple's monogram (also the favicon)" },
+    { "path": "theme/assets/images/sky-stars.jpg", "original": "assets/images/sky-stars.jpg", "what": "Night-sky background" },
+    { "path": "theme/assets/images/clouds-top.png", "original": "assets/images/clouds-top.png", "what": "Cloud artwork" },
+    { "path": "theme/assets/images/clouds-frame.png", "original": "assets/images/clouds-frame.png", "what": "Cloud frame around Shiva & Parvati" },
+    { "path": "theme/assets/images/shiva-parvati-back.png", "original": "assets/images/shiva-parvati-back.png", "what": "Shiva & Parvati hero artwork" },
+    { "path": "theme/assets/images/lotus-diya.png", "original": "assets/images/lotus-diya.png", "what": "Floating lotus diya" },
+    { "path": "theme/assets/images/damru.png", "original": "assets/images/damru.png", "what": "Damru separator" },
+    { "path": "theme/assets/images/nandi.png", "original": "assets/images/nandi.png", "what": "Nandi artwork" },
+    { "path": "theme/assets/images/shivling.png", "original": "assets/images/shivling.png", "what": "Shivling artwork" },
+    { "path": "theme/assets/images/kailash-scene.png", "original": "assets/images/kailash-scene.png", "what": "Kailash closing scene" },
+    { "path": "theme/assets/images/paper-bg.png", "original": "assets/images/paper-bg.png", "what": "Paper texture" },
+    { "path": "theme/assets/images/share-card.jpg", "original": null, "what": "WhatsApp share card (made from the moon + monogram; keep your own copy)" },
+    { "path": "theme/assets/audio/music.mp3", "original": "assets/audio/background-music.mp3", "what": "Background music (placeholder is 2 s of silence)" },
+    { "path": "theme/assets/fonts/hello-bride-script.ttf", "original": "assets/fonts/hello_bride_script/Hello Bride Script.ttf", "what": "Hello Bride Script font, commercial licence (placeholder is Great Vibes, SIL OFL)" },
+    { "path": "design/frames.pdf", "original": "Website Shiv Parvati.pdf", "what": "The designer's PDF (contains a client's details)", "kind": "design" }
+  ]
+}

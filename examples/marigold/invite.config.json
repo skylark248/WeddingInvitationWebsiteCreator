@@ -1,0 +1,119 @@
+{
+  "id": "marigold",
+  "site": {
+    "subdomain": "sample-marigold",
+    "domain": "rivaahdesigns.com"
+  },
+  "lang": "en",
+  "timezone": "Asia/Kolkata",
+  "timeFormat": "12h",
+  "dateLocale": "en-IN",
+
+  "couple": [
+    { "name": "Priya", "lineage": ["Daughter of Mrs. Meera & Mr. Anil Mehta"] },
+    { "name": "Arjun", "lineage": ["Son of Mrs. Kavita & Mr. Suresh Rao"] }
+  ],
+
+  "invitation": {
+    "blessing": ["Together with their families"],
+    "lines": ["request the pleasure of your company", "as they begin their journey together"]
+  },
+
+  "events": [
+    {
+      "id": "haldi",
+      "name": "Haldi",
+      "tagline": "Turmeric, laughter & sunshine",
+      "start": "2026-12-11T10:00:00+05:30",
+      "venue": "The Courtyard",
+      "attire": "Yellow & white"
+    },
+    {
+      "id": "mehendi",
+      "name": "Mehendi",
+      "tagline": "Henna under the stars",
+      "start": "2026-12-11T17:00:00+05:30",
+      "venue": "Lakeside Lawn",
+      "attire": "Green & pastels"
+    },
+    {
+      "id": "wedding",
+      "name": "Wedding",
+      "tagline": "Seven steps, one promise",
+      "start": "2026-12-12T19:30:00+05:30",
+      "venue": "Palace Terrace",
+      "attire": "Traditional Indian"
+    },
+    {
+      "id": "reception",
+      "name": "Reception",
+      "tagline": "Dinner, music & dancing",
+      "start": "2026-12-13T20:00:00+05:30",
+      "venue": "The Durbar Hall",
+      "attire": "Evening glam"
+    }
+  ],
+
+  "countdown": {
+    "event": "wedding",
+    "title": "Until we say “I do”",
+    "doneText": "We're married! Thank you for celebrating with us.",
+    "labels": { "mins": "Minutes", "secs": "Seconds" }
+  },
+
+  "venue": {
+    "name": "Lakeview Palace",
+    "address": "Udaipur, Rajasthan",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Udaipur+Rajasthan",
+    "linkLabel": "Open in Google Maps"
+  },
+
+  "rsvp": {
+    "enabled": true,
+    "endpoint": "local",
+    "title": "Kindly reply by 20th November",
+    "options": [
+      { "value": "yes_all", "label": "Joyfully accept — all events" },
+      { "value": "yes_some", "label": "Accept — some events", "askEvents": true },
+      { "value": "no", "label": "Regretfully decline", "attending": false }
+    ],
+    "askGuests": true,
+    "maxGuests": 6,
+    "askEvents": true,
+    "askPhone": true,
+    "askMessage": true,
+    "submitLabel": "Send reply",
+    "thanks": "Thank you! We can't wait to celebrate with you."
+  },
+
+  "closing": {
+    "lines": ["With love and blessings,"],
+    "family": "The Mehta & Rao Families"
+  },
+
+  "content": {
+    "quote": "Two souls, one journey — and you, our dearest, to share it with us.",
+    "hashtag": "#PriyaWedsArjun",
+    "notes": [
+      { "title": "Stay", "text": "Rooms are held for guests at Lakeview Palace until 1st December." },
+      { "title": "Travel", "text": "Udaipur airport is 25 minutes from the venue; cabs will be arranged." },
+      { "title": "Little ones", "text": "Children are most welcome at every event." }
+    ]
+  },
+
+  "gate": {
+    "enabled": true,
+    "style": "custom",
+    "label": "Tap the seal to open"
+  },
+
+  "share": {
+    "title": "Priya & Arjun — Wedding Invitation",
+    "description": "Together with their families, Priya & Arjun invite you to celebrate their wedding in Udaipur, 11–13 December 2026.",
+    "image": "assets/images/share-card.jpg",
+    "imageAlt": "Priya & Arjun wedding invitation",
+    "themeColor": "#6B1522"
+  },
+
+  "icon": "assets/images/monogram.png"
+}

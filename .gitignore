@@ -1,0 +1,25 @@
+node_modules/
+
+# ── Confidential: never in this public repo ─────────────────────────────
+# Client work lives in invites/, which is its own PRIVATE git repository
+# (npm run private-repo -- <url>).
+/invites/
+# Real versions of placeholder files (designer's artwork, bought fonts, music…)
+/private/
+# Example design sources (designer PDFs, extracted frames/artwork, notes)
+examples/*/design/*
+!examples/*/design/README.md
+# Private keys
+.env
+
+# ── Generated ───────────────────────────────────────────────────────────
+dist/
+.cache/
+.screens/
+.rsvp-test.jsonl
+**/design/figma/file.json
+.wrangler/
+.claude/settings.local.json
+
+# Generated proof sheets of the examples
+examples/*/proof.txt

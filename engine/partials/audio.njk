@@ -1,0 +1,9 @@
+{#- Engine: background music + floating play/pause button. Configure in invite.config.json → "music". -#}
+{% import "icons.njk" as icons %}
+{% if invite.music and invite.music.src %}
+<audio data-audio src="{{ invite.music.src }}" preload="none" loop playsinline></audio>
+<button type="button" class="audio-btn" data-audio-toggle aria-pressed="false" aria-label="Play music">
+  <span class="audio-btn__play">{{ icons.music() | safe }}</span>
+  <span class="audio-btn__pause">{{ icons.pause() | safe }}</span>
+</button>
+{% endif %}

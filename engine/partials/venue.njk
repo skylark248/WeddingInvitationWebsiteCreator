@@ -1,0 +1,10 @@
+{#- Engine: venue name, address and map link. Uses invite.config.json → "venue". -#}
+{% import "icons.njk" as icons %}
+{% set v = invite.venue %}
+{% if v %}
+<div class="venue">
+  {% if v.name %}<p class="venue__name">{{ v.name }}</p>{% endif %}
+  {% if v.address %}<p class="venue__address">{{ v.address }}</p>{% endif %}
+  {% if v.mapUrl %}<a class="venue__link" href="{{ v.mapUrl }}" target="_blank" rel="noopener">{{ icons.pin() | safe }}<span>{{ v.linkLabel or 'View venue location' }}</span></a>{% endif %}
+</div>
+{% endif %}

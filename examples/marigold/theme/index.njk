@@ -1,0 +1,97 @@
+{#- Marigold theme — light, floral and typographic. No moon, river or stars.
+    Shows: a custom envelope gate (theme/gate.njk), petals on opening, event cards written
+    in the theme (not the engine's event macro), 12-hour times with ordinal dates, no music,
+    and design-specific content from invite.content. -#}
+{% set first = invite.couple[0] %}
+{% set second = invite.couple[1] %}
+{% set wedding = events | find('wedding') %}
+<!DOCTYPE html>
+<html lang="{{ invite.lang or 'en' }}">
+<head>
+  {% include "head.njk" %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Marcellus&family=Pinyon+Script&display=swap">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  {% include "gate.njk" %}
+  {% include "audio.njk" %}
+  <div data-petals="assets/images/petals/1.png, assets/images/petals/2.png, assets/images/petals/3.png, assets/images/petals/4.png, assets/images/petals/5.png, assets/images/petals/6.png" data-petals-count="30" hidden></div>
+
+  <main class="invite">
+    <div class="garland" aria-hidden="true"></div>
+
+    <section class="hero" data-section="hero">
+      <div class="arch">
+        <p class="hero__families" data-reveal>{{ invite.invitation.blessing | lines }}</p>
+        <h1 class="hero__names" data-reveal>
+          <span>{{ first.name }}</span>
+          <span class="hero__amp">&amp;</span>
+          <span>{{ second.name }}</span>
+        </h1>
+        <p class="hero__lines" data-reveal>{{ invite.invitation.lines | lines }}</p>
+        <div class="hero__date" data-reveal>
+          <span>{{ wedding.date.weekday }}</span>
+          <strong>{{ wedding.date.dayOrdinal }} {{ wedding.date.month }} {{ wedding.date.year }}</strong>
+          <span>{{ invite.venue.address }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="families" data-section="families">
+      <p class="quote" data-reveal>“{{ invite.content.quote }}”</p>
+      <div class="families__grid">
+        {% for person in invite.couple %}
+        <div class="family" data-reveal>
+          <h2 class="family__name">{{ person.name }}</h2>
+          <p class="family__lineage">{{ person.lineage | lines }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="schedule" data-section="events">
+      <h2 class="section-title" data-reveal>The Celebrations</h2>
+      <ol class="cards">
+        {% for e in events %}
+        <li class="card" data-event="{{ e.id }}" data-reveal>
+          <div class="card__when">
+            <span class="card__day">{{ e.date.dayOrdinal }}</span>
+            <span class="card__month">{{ e.date.monthShort }} · {{ e.date.weekdayShort }}</span>
+          </div>
+          <div class="card__body">
+            <h3 class="card__name">{{ e.name }}</h3>
+            <p class="card__tagline">{{ e.tagline }}</p>
+            <p class="card__meta">{{ e.date.time }} · {{ e.venue }}</p>
+            <p class="card__attire">{{ e.attire }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="details" data-section="details">
+      <div data-reveal>{% include "countdown.njk" %}</div>
+      <div class="details__venue" data-reveal>{% include "venue.njk" %}</div>
+      <ul class="notes" data-reveal>
+        {% for n in invite.content.notes %}
+        <li><strong>{{ n.title }}</strong> {{ n.text }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="reply" data-section="rsvp">
+      <div data-reveal>{% include "rsvp.njk" %}</div>
+    </section>
+
+    <footer class="signoff" data-section="closing">
+      <p data-reveal>{{ invite.closing.lines | lines }}</p>
+      <p class="signoff__family" data-reveal>{{ invite.closing.family }}</p>
+      <p class="signoff__hashtag" data-reveal>{{ invite.content.hashtag }}</p>
+    </footer>
+  </main>
+
+  {% include "scripts.njk" %}
+</body>
+</html>

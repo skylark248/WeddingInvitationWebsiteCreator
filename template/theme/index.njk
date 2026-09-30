@@ -1,0 +1,57 @@
+{#- Starter theme. A simple single-column invite that uses every engine part.
+    Replace the layout and styles with the designer's frames; keep the includes.
+    To add the flowing river, starfield or petals, see engine/README.md. -#}
+{% from "event.njk" import event %}
+{% set first = invite.couple[0] %}
+{% set second = invite.couple[1] %}
+<!DOCTYPE html>
+<html lang="{{ invite.lang or 'en' }}">
+<head>
+  {% include "head.njk" %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  {% include "gate.njk" %}
+  {% include "audio.njk" %}
+
+  <main class="invite">
+    <section class="hero" data-section="hero">
+      <p class="hero__kicker" data-reveal>{{ invite.invitation.blessing | lines }}</p>
+      <h1 class="hero__names" data-reveal>{{ first.name }} <span class="hero__amp">&amp;</span> {{ second.name }}</h1>
+    </section>
+
+    <section class="invitation" data-section="invitation">
+      <p class="invitation__text" data-reveal>{{ invite.invitation.lines | lines }}</p>
+      <div class="family" data-reveal>
+        <h2 class="family__name">{{ first.name }}</h2>
+        <p class="family__lineage">{{ first.lineage | lines }}</p>
+      </div>
+      <div class="family" data-reveal>
+        <h2 class="family__name">{{ second.name }}</h2>
+        <p class="family__lineage">{{ second.lineage | lines }}</p>
+      </div>
+    </section>
+
+    <section class="events" data-section="events">
+      {% for e in events %}
+        {{ event(e) }}
+      {% endfor %}
+    </section>
+
+    <section class="finale" data-section="finale">
+      <div data-reveal>{% include "countdown.njk" %}</div>
+      <div data-reveal>{% include "venue.njk" %}</div>
+      <div data-reveal>{% include "rsvp.njk" %}</div>
+      <div class="closing" data-reveal>
+        <p>{{ invite.closing.lines | lines }}</p>
+        <p class="closing__family">{{ invite.closing.family }}</p>
+      </div>
+    </section>
+  </main>
+
+  {% include "scripts.njk" %}
+</body>
+</html>

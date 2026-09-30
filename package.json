@@ -1,0 +1,36 @@
+{
+  "name": "wedding-invitation-website-creator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Build, check and publish themed wedding invitation websites from a designer's Figma exports.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "new": "node scripts/new-invite.mjs",
+    "figma": "node scripts/figma-import.mjs",
+    "design": "node scripts/extract-design.mjs",
+    "serve": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "screens": "node scripts/screens.mjs",
+    "proof": "node scripts/proof.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "verify": "node scripts/verify-live.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "test:engine": "node scripts/test-engine.mjs",
+    "private-repo": "node scripts/private-repo.mjs",
+    "private-files": "node scripts/private-files.mjs",
+    "check-public": "node scripts/check-public.mjs",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "devDependencies": {
+    "nunjucks": "^3.2.4",
+    "pdfjs-dist": "^6.3.289",
+    "playwright": "^1.63.0",
+    "sharp": "^0.35.5",
+    "wawoff2": "^2.0.1",
+    "wrangler": "^4.144.0"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "template",
+  "site": {
+    "subdomain": "TODO-subdomain",
+    "domain": "rivaahdesigns.com"
+  },
+  "lang": "en",
+  "timezone": "Asia/Kolkata",
+  "timeFormat": "24h",
+  "dateLocale": "en-GB",
+
+  "couple": [
+    { "name": "TODO Bride", "lineage": ["TODO: family line 1", "TODO: family line 2"] },
+    { "name": "TODO Groom", "lineage": ["TODO: family line 1", "TODO: family line 2"] }
+  ],
+
+  "invitation": {
+    "blessing": ["TODO: blessing line"],
+    "lines": ["TODO: invitation wording from the couple"]
+  },
+
+  "events": [
+    {
+      "id": "wedding",
+      "name": "TODO: Wedding",
+      "tagline": "TODO: tagline",
+      "start": "TODO: 2027-01-01T19:00:00+05:30",
+      "venue": "TODO: venue",
+      "attire": "TODO: attire"
+    }
+  ],
+
+  "countdown": {
+    "event": "wedding",
+    "title": "Counting down to the big day",
+    "doneText": "The celebrations have begun!"
+  },
+
+  "venue": {
+    "name": "TODO: venue name",
+    "address": "TODO: city",
+    "mapUrl": "TODO: Google Maps share link",
+    "linkLabel": "View venue location"
+  },
+
+  "rsvp": {
+    "enabled": true,
+    "endpoint": "local",
+    "title": "Will you be joining us?",
+    "options": [
+      { "value": "yes_all", "label": "Yes, I'll be attending all events!" },
+      { "value": "yes_some", "label": "Yes, but only for specific events.", "askEvents": true },
+      { "value": "no", "label": "Regretfully, I won't be able to make it.", "attending": false }
+    ],
+    "askGuests": true,
+    "maxGuests": 10,
+    "askEvents": true,
+    "askPhone": false,
+    "askMessage": false,
+    "submitLabel": "Send RSVP"
+  },
+
+  "closing": {
+    "lines": ["We are excited to share our celebration with you!"],
+    "family": "TODO: family name"
+  },
+
+  "content": {},
+
+  "music": {
+    "src": ""
+  },
+
+  "gate": {
+    "enabled": true,
+    "label": "Slide to open",
+    "handleImage": null,
+    "logo": null
+  },
+
+  "share": {
+    "title": "TODO: Bride & Groom Wedding Invitation",
+    "description": "TODO: one line shown under the link on WhatsApp",
+    "image": "assets/images/share-card.jpg",
+    "imageAlt": "Wedding invitation",
+    "themeColor": "#1C3B47"
+  },
+
+  "icon": null
+}
