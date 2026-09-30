@@ -6,6 +6,8 @@ You design the invitation in **Figma**. **Claude** (an AI assistant) turns it in
 
 This guide takes you from an empty computer to your first live invitation, one small step at a time. You never write code, and you never need to understand it.
 
+> 🔖 **Bookmark this page.** It's your guide whenever you need it.
+
 > **What you need**
 > - A **Windows** computer and internet
 > - A **Claude Pro** subscription (claude.ai, paid monthly)
@@ -68,6 +70,10 @@ This makes sure everything you installed is ready to use.
 
 ## Part 2 — Get Invite Studio onto your computer *(once, about 5 minutes)*
 
+> **Why this step is needed:** Invite Studio lives on GitHub, the website you may be reading this on. It only works once it's **copied onto your computer with Git**. That copying is called **cloning**. Claude does it for you in step 2.3.
+>
+> ⚠️ **Don't use GitHub's green "Code → Download ZIP" button.** A ZIP copy can't receive updates, and parts of the setup won't work. Always follow step 2.3.
+
 ### 2.1 Make a folder for it
 
 1. Open **File Explorer** (the yellow folder icon), then click **This PC** → **Local Disk (C:)**.
@@ -81,11 +87,11 @@ This makes sure everything you installed is ready to use.
 2. When it asks for a folder, choose **`C:\Rivaah`**.
 3. If it asks whether you **trust** this folder, say **yes**.
 
-### 2.3 Ask Claude to download Invite Studio
+### 2.3 Ask Claude to clone (download) Invite Studio
 
 Type this message and press Enter:
 
-> Download the Invite Studio tool kit from https://github.com/skylark248/WeddingInvitationWebsiteCreator into a folder called invite-studio here.
+> Clone the Invite Studio tool kit with git from https://github.com/skylark248/WeddingInvitationWebsiteCreator into a folder called invite-studio here.
 
 Claude will ask permission to run a command. Click **Allow**. After a minute you'll have the folder **`C:\Rivaah\invite-studio`**.
 
@@ -149,7 +155,7 @@ Before making your own, look at the two sample invitations. Say:
 
 > Show me the Marigold example
 
-A browser window opens with a sample invitation. **Tap the wax seal** to open it, then scroll through.
+The sample invitation opens, either in a panel inside the Claude app or in your browser. **Tap the wax seal** to open it, then scroll through.
 
 Then try:
 
@@ -166,7 +172,11 @@ Claude gives you a link like `http://192.168.1.5:5173`.
 - Open it on your phone. The phone must be on the **same Wi-Fi** as the computer.
 - If Windows asks whether to allow **Node.js**, tick **Private networks** and click **Allow**.
 
+> ⚠️ This link is **only for you**. It works only on your Wi-Fi, and only while your computer is on and Claude is open. **Don't send it to couples.** They get a proper link in [Part 7](#part-7--put-it-on-the-internet).
+
 This is how you'll look at every invitation while you make it. The page **updates by itself** whenever something changes.
+
+✅ **Done when** you've opened the Marigold invitation on your computer and on your phone.
 
 ---
 
@@ -221,7 +231,10 @@ Start with:
 - You can **send a screenshot** with circles or arrows drawn on it. Claude understands pictures.
 - Changed your mind? **"Undo that"** goes back safely.
 - After finishing a few parts, start a **new session** and say **"Where were we?"** Claude remembers exactly where you stopped.
+- Working on **several couples**? Say which one: *"Let's continue Priya and Arjun"*.
 - Same design for another couple? Say **"New invite, same design as Priya and Arjun"**.
+
+✅ **Done when** Claude says the invitation is ready to send to the couple.
 
 ---
 
@@ -259,7 +272,7 @@ When the couple says OK:
 
 Claude uploads the website, then guides you through **two short sets of clicks** (it tells you the exact words to type):
 
-**In Cloudflare:** open your project → **Custom domains** → **Set up a custom domain** → type the address (e.g. `priyaarjun.rivaahdesigns.com`) → **Continue**.
+**In Cloudflare:** open your project → **Custom domains** → **Set up a custom domain** → type the address (e.g. `priyaarjun.rivaahdesigns.com`) → **Continue**. Then follow what the screen says; Claude helps if the buttons look different.
 
 **In Hostinger:**
 
@@ -270,6 +283,7 @@ Claude uploads the website, then guides you through **two short sets of clicks**
    |---|---|---|
    | **CNAME** | `priyaarjun` | `invite-priya-arjun.pages.dev` |
 
+   These are only examples. **Copy the exact values Claude gives you.** Cloudflare sometimes adds a few letters to the "Points to" address.
 3. Leave the other settings as they are and click **Add record**.
 
 > ⚠️ **Don't change or delete any other records** in Hostinger. They run your main website and email. Claude tells you if one specific record ever needs removing.
@@ -301,6 +315,8 @@ Check on **an iPhone and an Android**. Borrow one if needed.
 ### Starting a work session
 
 Open the Claude app → **Code** → folder **`C:\Rivaah\invite-studio`**, and say **"Where were we?"**
+
+You can **close the Claude app any time**. Your work is saved after every step you approve.
 
 ### Things you can say
 
@@ -340,6 +356,8 @@ You can talk normally. These all work:
 | Claude mentions a **usage limit** | That's the Claude Pro limit. Nothing is lost: come back later and say "Where were we?" |
 | Claude says it's **not allowed** to change something | A safety lock protects the shared tool kit. Say "I'm stuck" so your friend can do it properly. |
 | "npm is not recognized" or "node is not recognized" | Node.js isn't installed, or the computer wasn't restarted. Redo [1.2](#12-nodejs-runs-the-website-tools-in-the-background) and [1.5](#15-restart-your-computer). |
+| "git is not recognized" | Git isn't installed, or the computer wasn't restarted. Redo [1.3](#13-git-keeps-a-history-of-every-change-so-anything-can-be-undone) and [1.5](#15-restart-your-computer). |
+| Claude says the tool kit was **downloaded as a ZIP** | Delete that folder and do [Part 2](#part-2--get-invite-studio-onto-your-computer-once-about-5-minutes) again (clone it). Move any `invites` folder you already made into the new copy. |
 | Your phone can't open the preview link | Same Wi-Fi as the computer? Allow **Node.js** in the Windows firewall message (Private networks). |
 | The live address doesn't open yet | Wait up to 30 minutes after adding the Hostinger record, then ask "Is my site live?" |
 | Your friend says there's a new version | "Update the tool kit". Your invitations aren't affected. |
@@ -356,8 +374,12 @@ You can talk normally. These all work:
 
 ### Words you'll hear
 
-| Word | In Figma terms |
+| Word | Meaning, in Figma terms where possible |
 |---|---|
+| Session | One conversation with Claude. Starting a new one never loses work. |
+| Tool kit | Invite Studio itself: the part everyone shares, not your work |
+| Clone | Copying the tool kit onto your computer with Git (Part 2) |
+| Placeholder | A plain stand-in picture where real artwork isn't shared |
 | Section | A frame |
 | CSS | The design panel: colours, fonts, spacing |
 | Flexbox | Auto layout |
@@ -371,7 +393,7 @@ You can talk normally. These all work:
 
 ### What it costs
 
-- **Claude Pro:** your monthly subscription. It has a usage limit; if you reach it, wait and continue later.
+- **Claude Pro:** your monthly subscription. It has a usage limit; if you reach it, wait and continue later. If you hit the limit often, the bigger **Max** plan gives more room.
 - **Cloudflare, Git, Node.js, Chrome:** free.
 - **Figma:** the free plan works. Figma limits how often free accounts can share designs with apps. If Claude says the limit is reached, export a PDF instead.
 - **Hostinger:** your existing plan. Nothing changes there except one address record per invitation.

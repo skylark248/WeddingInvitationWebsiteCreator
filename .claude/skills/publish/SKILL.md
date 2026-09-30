@@ -17,7 +17,7 @@ First ask which one they want, unless it's already clear:
 2. Run `npm run deploy -- <id> --preview`. It runs every check first. If something must be fixed, explain it plainly, fix it, and try again.
 3. Run `npm run proof -- <id>` and show them the text.
 4. Tell them to send the couple **both** on WhatsApp:
-   - the preview link (`https://preview.invite-<id>.pages.dev/`)
+   - the preview link, exactly as the deploy printed it (usually `https://preview.invite-<id>.pages.dev/`, but Cloudflare sometimes adds a few extra letters to the name)
    - the proof text
    Ask the couple to reply **OK** or send corrections.
 5. Record it in `PROGRESS.md`: tick step 6, and add a row to Deploys with the date, "preview" and the link. Then commit (`git -C invites add <id>`, then `git -C invites commit -m "<id>: preview sent"`), and `git -C invites push` if it has an online backup.
@@ -32,7 +32,7 @@ First ask which one they want, unless it's already clear:
    - Ask them to add this invite to the **Invites** tab of the sheet: `<id>`, `yes`, the couple's names.
 3. Run `npm run deploy -- <id> --live`, then walk them through the steps it prints, one click at a time, waiting for "done" after each:
    - **Cloudflare:** add the custom domain (skipped if it was done automatically).
-   - **Hostinger:** in hPanel → Domains → rivaahdesigns.com → DNS, add **one CNAME record**.
+   - **Hostinger:** in hPanel → Domains → rivaahdesigns.com → DNS, add **one CNAME record**. Use exactly the "Points to" value the deploy printed; don't retype it from memory.
      - Warn them first: *"Don't change or delete any other records — they run your main website."*
      - Only delete an existing record with the same name as the subdomain, if the instructions say so.
 4. **Verify:** run `npm run verify -- <id>`. If the address isn't found yet, explain that the internet takes 5–30 minutes to learn a new address. Offer to check again later; don't loop.

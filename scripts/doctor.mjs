@@ -14,6 +14,9 @@ run(async () => {
   const major = Number(process.versions.node.split('.')[0]);
   add(major >= 20, `Node.js ${process.versions.node}`, 'Install Node.js LTS from nodejs.org, then restart the Claude app.');
 
+  const cloned = fs.existsSync(path.join(ROOT, '.git'));
+  add(cloned, cloned ? 'Tool kit cloned with git (updates work)' : 'Tool kit was downloaded as a ZIP, not cloned — updates won\'t work', 'Clone it again as in README Part 2 (not "Download ZIP"), then move the invites folder into the new copy.');
+
   const installed = fs.existsSync(path.join(ROOT, 'node_modules', 'nunjucks'));
   add(installed, 'Project tools installed', 'Run: npm install');
 

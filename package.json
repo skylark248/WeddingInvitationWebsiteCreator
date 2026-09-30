@@ -23,7 +23,7 @@
     "private-repo": "node scripts/private-repo.mjs",
     "private-files": "node scripts/private-files.mjs",
     "check-public": "node scripts/check-public.mjs",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "devDependencies": {
     "nunjucks": "^3.2.4",

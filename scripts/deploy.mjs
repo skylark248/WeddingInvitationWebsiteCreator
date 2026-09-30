@@ -38,15 +38,18 @@ run(async () => {
   const result = await wrangler(['pages', 'deploy', path.join(dir, 'dist'), '--project-name', project, '--branch', branch, '--commit-dirty=true']);
   if (result.code !== 0) throw new UserError('The upload failed. See the message above.');
 
+  // Cloudflare adds a random suffix when a project's preferred *.pages.dev name is taken,
+  // so read the real address from its output rather than assuming "<project>.pages.dev".
   const urls = [...new Set(result.output.match(/https:\/\/[a-z0-9.-]+\.pages\.dev/gi) || [])];
+  const pagesHost = urls.length ? new URL(urls[0]).hostname.split('.').slice(-3).join('.') : `${project}.pages.dev`;
   if (!live) {
-    console.log(`\n✔ Preview is up. Send this link to the couple:\n\n    https://preview.${project}.pages.dev/\n`);
+    console.log(`\n✔ Preview is up. Send this link to the couple:\n\n    https://preview.${pagesHost}/\n`);
     if (urls.length) console.log(`  (This exact version is also saved at ${urls[0]})\n`);
     return;
   }
 
   const domainAdded = await attachDomain(project, hostname);
-  console.log(`\n✔ The live site is uploaded to https://${project}.pages.dev/\n`);
+  console.log(`\n✔ The live site is uploaded to https://${pagesHost}/\n`);
   if (domainAdded !== 'already') {
     console.log(`To show it at https://${hostname}/ (only needed once per invite):
 
@@ -55,7 +58,7 @@ run(async () => {
 
   2. Hostinger — hPanel → Domains → ${config.site.domain} → DNS / Nameservers → DNS records
      • If there is already a record with Name "${config.site.subdomain}", delete it first.
-     • Add record:  Type CNAME   Name ${config.site.subdomain}   Points to ${project}.pages.dev   TTL default
+     • Add record:  Type CNAME   Name ${config.site.subdomain}   Points to ${pagesHost}   TTL default
 
   3. Wait 5–30 minutes, then run:  npm run verify -- ${id}
 `);
