@@ -1,214 +1,381 @@
-# Wedding Invitation Website Creator
+# Invite Studio
 
-This turns a designer's Figma designs into themed, phone-first wedding invitation websites, checks them, and publishes each one on its own subdomain (e.g. `https://priyaarjun.rivaahdesigns.com`).
+### Make wedding invitation websites from your own designs — no coding needed
 
-It's built so a **designer who doesn't code** can make invites by talking to Claude Code in the Claude desktop app:
+You design the invitation in **Figma**. **Claude** (an AI assistant) turns it into a website that guests open on their phones. You check every step and ask for changes in plain words. When the couple is happy, the invitation goes live at its own address, like **priyaarjun.rivaahdesigns.com**.
 
-- Everything that must be right every time (share previews, time zones, RSVP storage, phone quirks) lives in a tested **engine** and in **scripts**.
-- The creative work (layout, artwork, effects) lives in each invite's **theme**.
-- A `.claude/` setup (instructions, skills, review agents, guard hooks) keeps Claude on the rails.
+This guide takes you from an empty computer to your first live invitation, one small step at a time. You never write code, and you never need to understand it.
 
-> **Designer?** Read [HANDBOOK.md](HANDBOOK.md). This README is for whoever sets up and maintains the tool kit.
-
----
-
-## Public tool kit, private work
-
-This repository is **public**. Nothing confidential is ever committed to it:
-
-| What | Where it lives | In this public repo? |
-|---|---|---|
-| Engine, scripts, template, Claude setup, docs | this repo | ✅ yes |
-| Example designs | `examples/` | ✅ yes, but with **placeholder** artwork, music and fonts |
-| **Client work**: every couple's names, family details, designs, artwork, RSVP settings | `invites/`, which is **its own git repository** (local only, or a private GitHub repo) | ❌ never (git-ignored) |
-| **Real versions** of example files (designer artwork, bought fonts, music) | `private/`, a mirror of the repo paths | ❌ never (git-ignored) |
-| Example design sources (designer PDFs, extracted frames/notes) | `examples/*/design/` | ❌ never (git-ignored) |
-| Private keys (Figma token) | `.env` | ❌ never (git-ignored) |
-
-Several independent layers keep it that way:
-
-1. **`.gitignore`** excludes all of the above.
-2. **Pre-commit check** (`.githooks/pre-commit` → `npm run check-public`), installed automatically by `npm install`. It refuses a commit that contains:
-   - anything from `invites/` or `private/`
-   - a file byte-identical to one of the real files in `private/`
-   - text containing a client's family lines or family name (read from `invites/*/invite.config.json`)
-3. **Claude's guard hook**: on the designer's computer, Claude can't commit to this repo at all. All saving goes to `invites/` with `git -C invites …`, and this repo only receives updates (`git pull`).
-
-### Placeholders and real files
-
-Files that can't be public are replaced in the repo by **placeholders of the same size**:
-
-- simple drawn shapes for artwork
-- 2 seconds of silence for music
-- Great Vibes (SIL OFL) for a commercial script font
-
-Each design lists its private files in `private-files.json`.
-
-- **Real copies** go in `private/<same path>`, for example `private/examples/shiv-parvati/theme/assets/images/moon.png`. The build **automatically uses the real file** when there is one, so placeholders never show up as "modified" in git and can't be committed by mistake.
-- **Check what's real:** `npm run private-files -- shiv-parvati`
-- **Restore from originals:** `npm run private-files -- shiv-parvati --from "D:\path\to\original\website"`. It copies each file from where it lived in the original site into `private/`. Design PDFs go into the example's git-ignored `design/` folder.
-
-Without the real files, everything still builds, passes its checks and tests; it just looks plain.
+> **What you need**
+> - A **Windows** computer and internet
+> - A **Claude Pro** subscription (claude.ai, paid monthly)
+> - **Figma** (the free plan is fine)
+> - Your **Hostinger** login (where rivaahdesigns.com is managed)
+> - About **1 hour** for the first-time setup. After that, each invitation takes as long as the design needs.
+>
+> Everything else used here is **free**.
 
 ---
 
-## Setup
+## Contents
 
-### Once, by the maintainer
+1. [Install the apps](#part-1--install-the-apps-one-time-about-30-minutes) *(once)*
+2. [Get Invite Studio onto your computer](#part-2--get-invite-studio-onto-your-computer-once-about-5-minutes) *(once)*
+3. [Let Claude set everything up](#part-3--let-claude-set-everything-up-once-about-15-minutes) *(once)*
+4. [See it working](#part-4--see-it-working-5-minutes)
+5. [Prepare your design](#part-5--prepare-your-design)
+6. [Make your first invitation](#part-6--make-your-first-invitation)
+7. [Put it on the internet](#part-7--put-it-on-the-internet)
+8. [Everyday use and help](#part-8--everyday-use-and-help)
 
-1. **Decide where client work is kept.** `invites/` is always its own git repository, separate from this public one:
-   - **Local only** (`npm run private-repo -- --local`): full history and undo on the designer's computer, but **no backup** and no remote help.
-   - **Private GitHub repository**, recommended once possible: create an empty repo such as `rivaah-invites` set to **Private**, give both of you access, and run `npm run private-repo -- <url>`. A local-only setup can be connected later, and all history is uploaded.
-2. **(Optional) Set up the RSVP Google Sheet** in the studio's Google account: [rsvp/SETUP.md](rsvp/SETUP.md). This can also wait until the first invite goes live; the `/publish` skill walks through it.
-3. **Your own machine:**
-   ```bash
-   git clone https://github.com/skylark248/WeddingInvitationWebsiteCreator.git
-   cd WeddingInvitationWebsiteCreator
-   npm install                                   # also installs the pre-commit check
-   npx playwright install webkit
-   npm run private-repo -- --local            # client work → invites/ (or pass a private repo URL)
-   npm run private-files -- shiv-parvati --from "<original site folder>"   # optional: real example art
+---
+
+## Part 1 — Install the apps *(one time, about 30 minutes)*
+
+Install these four apps in this order. For each one you'll download a file, open it and click through. When Windows asks *"Do you want to allow this app to make changes to your device?"*, click **Yes**.
+
+### 1.1 The Claude app
+
+1. Go to **[claude.ai/download](https://claude.ai/download)** and click **Download for Windows**.
+2. Open the downloaded file. The app installs by itself.
+3. Sign in with your Claude account. You need the **Pro** plan: if you don't have it yet, go to claude.ai → your name → **Upgrade**.
+
+✅ **Done when** the Claude app opens and shows your name.
+
+### 1.2 Node.js (runs the website tools in the background)
+
+1. Go to **[nodejs.org](https://nodejs.org)** and click the big **Download Node.js (LTS)** button.
+2. Open the downloaded file and click **Next** on each screen, then **Install**, then **Finish**.
+   - Tick *"I accept"* when it shows the licence.
+   - If you see a box about *"Automatically install the necessary tools"*, **leave it empty**.
+
+### 1.3 Git (keeps a history of every change, so anything can be undone)
+
+1. Go to **[git-scm.com/download/win](https://git-scm.com/download/win)** and click **Click here to download**.
+2. Open the file. The installer shows **many** screens. **Don't change anything**: just keep clicking **Next**, then **Install**, then **Finish**.
+
+### 1.4 Google Chrome
+
+If you don't already have it: **[google.com/chrome](https://www.google.com/chrome)**, then download and open the file.
+
+### 1.5 Restart your computer
+
+This makes sure everything you installed is ready to use.
+
+✅ **Part 1 is done.**
+
+---
+
+## Part 2 — Get Invite Studio onto your computer *(once, about 5 minutes)*
+
+### 2.1 Make a folder for it
+
+1. Open **File Explorer** (the yellow folder icon), then click **This PC** → **Local Disk (C:)**.
+2. Right-click an empty area → **New** → **Folder**, and name it **`Rivaah`**.
+   Use exactly this name, with **no spaces**.
+
+### 2.2 Open Claude in "Code" mode on that folder
+
+1. Open the Claude app and click **Code** (in the menu on the left).
+   If you don't see it, update the app from its menu (**Check for updates**) and restart it.
+2. When it asks for a folder, choose **`C:\Rivaah`**.
+3. If it asks whether you **trust** this folder, say **yes**.
+
+### 2.3 Ask Claude to download Invite Studio
+
+Type this message and press Enter:
+
+> Download the Invite Studio tool kit from https://github.com/skylark248/WeddingInvitationWebsiteCreator into a folder called invite-studio here.
+
+Claude will ask permission to run a command. Click **Allow**. After a minute you'll have the folder **`C:\Rivaah\invite-studio`**.
+
+<details>
+<summary>If Claude can't do it, do it yourself instead (one line)</summary>
+
+1. Click **Start** and type **PowerShell**, then open **Windows PowerShell**.
+2. Paste this line (right-click pastes) and press Enter:
+
    ```
-   To lift Claude's file guards on your machine (for engine work), create `.claude/settings.local.json`:
-   ```json
-   { "env": { "INVITE_MAINTAINER": "1" } }
+   git clone https://github.com/skylark248/WeddingInvitationWebsiteCreator.git C:\Rivaah\invite-studio
    ```
-   The `.env` guard and the pre-commit check stay on.
+3. Close the window when it finishes.
 
-### The designer's computer (Windows)
+</details>
 
-Do it together the first time:
+### 2.4 Open Invite Studio itself
 
-1. **Install:**
-   - **Node.js LTS** (nodejs.org)
-   - **Git for Windows** (git-scm.com). Claude Code on Windows needs it.
-   - **Google Chrome**
-   - the **Claude desktop app**, signed in with Claude Pro
-2. **Get the tool kit.** Clone `https://github.com/skylark248/WeddingInvitationWebsiteCreator.git` into a folder **without spaces**, e.g. `C:\Rivaah\invite-studio`, then open that folder in the Claude app's **Code** tab.
-3. **Say "Set up my computer".** The `/setup` skill runs `npm run doctor` and fixes each missing item with them, in plain language:
-   - `npm install` and `npx playwright install webkit`
-   - their Git name
-   - **Client work:** `npm run private-repo -- --local`, or with the private repo URL once one exists.
-   - **Connect Figma:** a personal access token from Figma → Settings → Security, scope *File content: read-only*. It's pasted into `.env` through Notepad, never the chat.
-   - **Connect Cloudflare:** `npx wrangler login`, with the studio's email. This can wait until the first publish.
-   - optionally, the real example files
-4. Check that `npm run doctor` is all ✔.
+This step matters: Claude only learns how Invite Studio works when **this exact folder** is open.
 
-### Updating the designer's tool kit
+1. In the Claude app's **Code** area, start a **new session**.
+2. Choose the folder **`C:\Rivaah\invite-studio`**. Trust it if asked.
+3. To check, ask:
 
-- **You:** change the tool kit → `npm run test:engine` → bump `engine/VERSION` if the engine changed → commit and push. The pre-commit check runs.
-- **Them:** "Update the tool kit". Claude runs `git pull` and `npm install`.
-- Existing invites keep their frozen copy of the engine. Only new invites pick up engine changes.
+   > What can you help me with here?
+
+✅ **Done when** Claude talks about wedding invitations: starting a new invite, previewing, publishing.
+
+> **About "Allow" requests:** while working, Claude sometimes asks permission to run something. For Invite Studio tasks it's safe to click **Allow**. If it offers *"always allow for this project"*, that's fine too. Anything risky is blocked by built-in safety locks anyway. If a request looks strange, click **Deny** and ask Claude what it wanted to do.
 
 ---
 
-## How an invite is made
+## Part 3 — Let Claude set everything up *(once, about 15 minutes)*
 
-The designer's side is in [HANDBOOK.md](HANDBOOK.md):
+In the Invite Studio session, type:
 
-1. The couple fills in [docs/couple-questions.md](docs/couple-questions.md).
-2. The designer makes the design in Figma.
-3. Claude:
-   - imports it (**a Figma link, a PDF, or both**)
-   - builds it section by section, with the designer's approval each time
-   - checks it with scripts, screenshots and two review agents
-   - publishes a preview with a proof sheet for the couple
-   - after the couple approves, goes live with the real-phone test
+> Set up my computer
 
-Everything for a couple lives in `invites/<id>/`:
+Claude goes through a checklist with you and explains each item. Here's what to expect:
 
-```
-invites/<id>/
-  invite.config.json   content: names, events, venue, RSVP, share preview, extra content
-  theme/               index.njk (page), theme.css, theme.js, assets/ (artwork, fonts, music)
-  design/              couple-details.md, frame pictures, extracted artwork, figma-notes.md / pdf-notes.md
-  engine/              frozen copy of engine/ from when the invite was created
-  PROGRESS.md          where this invite stands (read at the start of every Claude session)
-```
-
-## Commands
-
-| Command | What it does |
+| Claude will… | What you do |
 |---|---|
-| `npm run doctor` | Plain-language check that this computer has everything |
-| `npm run private-repo [-- --local \| <url>]` | Status; set up `invites/` on this computer only; or connect it to a private GitHub repository (uploads all history) |
-| `npm run private-files -- <design> [--from <folder>]` | Which example files are real vs placeholder; restore real ones into `private/` |
-| `npm run new -- <id> [--from <design>]` | Create `invites/<id>` from the template, or reuse a finished design for another couple |
-| `npm run figma -- <id> <link> [--refresh]` | Read a design from a Figma link (free plan, token in `.env`, ~3 API requests, cached): frame pictures, artwork, `figma-notes.md` |
-| `npm run design -- <id>` | Read the PDF(s) in `design/`: frame pictures, embedded artwork, `pdf-notes.md` |
-| `npm run serve -- <id> [--lan]` | Local preview with auto-refresh. `--lan` adds a link for a phone on the same Wi-Fi |
-| `npm run build -- <id>` | Build into `invites/<id>/dist` |
-| `npm run check -- <id> [--live]` | Build and run every check. `--live` is strict about RSVP, map link, etc. |
-| `npm run screens -- <id> [--sections] [--gate]` | Screenshots at 360/390/430 px in Chrome and WebKit (Safari's engine) → `.screens/` |
-| `npm run proof -- <id>` | WhatsApp-ready text of every detail for the couple to confirm |
-| `npm run deploy -- <id> --preview` | Upload a private preview for the couple (Cloudflare Pages) |
-| `npm run deploy -- <id> --live` | Upload the real site. Refuses unless `check --live` passes |
-| `npm run verify -- <id> [--url …]` | Check the site on the internet: DNS, share preview, files, RSVP sheet |
-| `npm run test:engine` | Drive every example in Chrome and WebKit: opening screen, music, petals, countdown, RSVP, river |
-| `npm run check-public [-- --all]` | The public-repo leak check (runs automatically before each commit) |
+| Install the website tools (a few minutes; they download once) | Click **Allow** if asked, then wait |
+| Install a test browser that behaves like an iPhone | Wait |
+| Ask your name and email, which label your saved work | Type them |
+| Create your private **`invites`** folder, where all your couples' work is kept | Nothing |
+| Connect **Figma**, so you can simply share Figma links | Copy a key from Figma and paste it **into the Notepad window Claude opens**, never into the chat. Claude shows you where to click in Figma. |
+| Connect **Cloudflare** (for publishing) | This can wait until [Part 7](#part-7--put-it-on-the-internet) |
 
-`<id>` is a folder name in `invites/` or `examples/`.
+✅ **Done when** Claude says everything is ready.
 
-## Repository layout
+> 🔒 **Your work stays private.** Invite Studio itself is shared publicly on the internet, but **your couples' names, family details and designs are never part of it**. They live only in `C:\Rivaah\invite-studio\invites` on your computer. Safety locks stop Claude from putting anything personal anywhere else.
+>
+> For now there's **no online backup** of that folder: **don't delete it**, and keep your computer safe. Your friend can add a private online backup later, and all your history is kept.
 
-```
-engine/            shared, tested parts: gate, music, countdown, RSVP, reveal, river, starfield, petals
-  README.md        ← reference for building themes
-template/          starter invite copied by `npm run new`
-examples/          two finished designs that share nothing visual (references and engine tests)
-  shiv-parvati/    night sky, moon, flowing river, slide-to-open, music   (placeholder art)
-  marigold/        cream & maroon, tap-to-open envelope, petals, event cards, no music
-scripts/           the commands above
-rsvp/              Google Apps Script for the shared RSVP sheet + setup guide
-CLAUDE.md          standing instructions for Claude (the designer is not a developer)
-HANDBOOK.md        the designer's guide
-.claude/           skills, review agents, guard hooks, permissions
-docs/              couple questionnaire
-.githooks/         pre-commit leak check
-invites/           (git-ignored) the private client-work repository
-private/           (git-ignored) real versions of placeholder files
-```
+---
 
-## Hosting
+## Part 4 — See it working *(5 minutes)*
 
-- **Cloudflare Pages** (free): one project per invite, named `invite-<id>`. Previews go to `https://preview.invite-<id>.pages.dev/`.
-- **Domain:** DNS stays at Hostinger, so the main website and email are untouched. Each invite needs one CNAME record, `<subdomain> → invite-<id>.pages.dev`, plus the custom domain added in the Cloudflare project. `npm run deploy -- <id> --live` prints the exact steps.
-- **Optional:** set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` so the deploy attaches the Cloudflare custom domain by itself.
+Before making your own, look at the two sample invitations. Say:
 
-## RSVPs
+> Show me the Marigold example
 
-All invites post to one Google Sheet in the studio's Google account (one tab per invite) through an Apps Script web app. See [rsvp/SETUP.md](rsvp/SETUP.md). While previewing, `"endpoint": "local"` stores test replies in `invites/<id>/.rsvp-test.jsonl`.
+A browser window opens with a sample invitation. **Tap the wax seal** to open it, then scroll through.
 
-## Claude Code setup (the designer's assistant)
+Then try:
 
-- **`CLAUDE.md`** sets how Claude talks (plain design language, one question at a time, show don't tell) and the golden rules:
-  - never invent content
-  - one approved step at a time
-  - never weaken a check
-  - publish only via `npm run deploy`
-  - save client work only to the private repo
-- **Skills** (`.claude/skills/`): `setup`, `start-invite`, `import-design`, `build-section`, `continue`, `preview`, `check-invite`, `publish`, `undo`, `stuck`, `learn`. They trigger from plain requests ("new couple", "here's the PDF", "send it to the couple") or as `/name`.
-- **Agents** (`.claude/agents/`): `design-reviewer` compares screenshots with the design frames; `guest-tester` reviews as guests would and checks every detail against `couple-details.md`.
-- **Hooks** (`.claude/hooks/`):
-  - Edits are limited to an invite's `theme/`, `design/`, config and `PROGRESS.md`, plus `invites/help-requests/`.
-  - Shell commands can't write elsewhere, call wrangler directly, force-push, reset, rewrite history, skip hooks, change packages, touch `.env`, or commit to the public repo.
-  - At session start, Claude is told where each invite stands and whether client work is backed up.
-- **Help requests:** `/stuck` writes a note to `invites/help-requests/`. With an online backup it's pushed for you; if local only, the designer sends it on WhatsApp.
+> Show me the Shiv–Parvati example
 
-## Changing the engine
+This one shows **plain placeholder pictures on purpose**, because the real artwork isn't shared publicly. If you have the original website files on your computer, say *"Restore the real example files from D:\Wedding Site"* (use wherever your files are) to see it with the real artwork. That stays on your computer only.
 
-1. Edit `engine/`, run `npm run test:engine` and `npm run screens -- shiv-parvati`, then bump `engine/VERSION`.
-2. Existing invites keep their frozen copy. To upgrade one, copy the new `engine/` into `invites/<id>/engine/` and re-check it.
+**On your phone:** say
 
-## Every design is different
+> Show me on my phone
 
-- The engine holds only what nearly every invite needs: opening screen, music, countdown, RSVP, venue link, share preview, and the checks.
-- The river, starfield and petals are optional effects that run only when a theme adds their markup.
-- A theme is free-form HTML/CSS/JS. It can replace any engine partial (e.g. its own `gate.njk`), write its own event layout, keep design-specific content under `content` in the config, and bring its own libraries.
-- See [engine/README.md](engine/README.md).
+Claude gives you a link like `http://192.168.1.5:5173`.
 
-## Licences and credits
+- Open it on your phone. The phone must be on the **same Wi-Fi** as the computer.
+- If Windows asks whether to allow **Node.js**, tick **Private networks** and click **Allow**.
 
-- **Cormorant Garamond** and **Great Vibes** (the placeholder script font) are under the SIL Open Font License; the licence files sit next to the fonts.
-- **Placeholders:** example artwork in this repo is simple placeholder drawing. The real Shiv–Parvati artwork, music and *Hello Bride Script* font belong to their owners and are **not** included.
-- **Example content:** names and dates in the examples are fictional.
+This is how you'll look at every invitation while you make it. The page **updates by itself** whenever something changes.
+
+---
+
+## Part 5 — Prepare your design
+
+### 5.1 Get the couple's details
+
+Say:
+
+> Show me the questions for the couple
+
+Copy the message and send it to the couple on WhatsApp, or make a Google Form with the same questions. Claude only ever uses names and dates **exactly as the couple wrote them**, so ask them to type carefully.
+
+### 5.2 Design in Figma, the way that works best
+
+- Make **one frame per part of the page**, top to bottom: opening screen, main picture, invitation, events, RSVP, closing. Keep all frames the **same width** (390 px or 1080 px are both fine).
+- **Keep text as real text**, not outlined, so Claude reads the exact words, fonts and sizes.
+- **Mark your artwork for export:** select the layer → **Export** (right panel) → **+** → **PNG** at **2x**. Pictures you placed into Figma are picked up automatically.
+- **Write notes** (a "Notes" frame or sticky notes) for anything that moves or needs explaining, e.g. *"water falls from the moon"*, *"petals fall when it opens"*, *"tap the seal to open"*.
+- **Make a share card:** a **1200 × 630** frame. This is the picture WhatsApp shows when the link is shared.
+- **Name your layers** (`moon`, `nandi`, `garland`). It helps Claude, and you.
+- **Check font licences.** Fonts labelled *"Personal use"* or *"Demo"* usually can't be used for paid work.
+
+### 5.3 Two ways to give Claude the design (both together is best)
+
+- **Figma link:** right-click the page or frame → **Copy link to selection**, then paste it into the chat.
+- **PDF:** select all the website frames → **Export** → **PDF** → **Export**. Then tell Claude where you saved it (usually **Downloads**). Claude finds it.
+
+---
+
+## Part 6 — Make your first invitation
+
+Start with:
+
+> New invite for Priya and Arjun
+
+(use your couple's names). Then just follow along. Claude asks for one thing at a time.
+
+| Step | What happens | You say, for example |
+|---|---|---|
+| 1 | Claude suggests a web address, like `priyaarjun.rivaahdesigns.com` | "Yes, that's good" |
+| 2 | You give the couple's details | *(paste their answers)* |
+| 3 | You give the design | "Here's the Figma link: …" / "The PDF is in my Downloads" |
+| 4 | Claude tells you what it found (frames, fonts, artwork) and asks about anything unclear | Answer its questions |
+| 5 | Claude builds **one part at a time** and shows it to you | "Looks right" / "Make the names bigger" / "Move the moon up a little" |
+| 6 | Repeat for each part | "Build the next section" |
+| 7 | Look at it on your phone | "Show me on my phone" |
+| 8 | Claude checks everything thoroughly (phone sizes, spelling against the couple's details, readability) | "Is it ready?" |
+
+**Tips**
+
+- You can **send a screenshot** with circles or arrows drawn on it. Claude understands pictures.
+- Changed your mind? **"Undo that"** goes back safely.
+- After finishing a few parts, start a **new session** and say **"Where were we?"** Claude remembers exactly where you stopped.
+- Same design for another couple? Say **"New invite, same design as Priya and Arjun"**.
+
+---
+
+## Part 7 — Put it on the internet
+
+### 7.1 Make a free Cloudflare account *(once)*
+
+Cloudflare is the free service that puts your invitations on the internet.
+
+1. Go to **[dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up)** and sign up with your studio email. Confirm the email they send you.
+2. In Claude, say **"Connect Cloudflare"**. A browser window opens. Click **Allow**, then go back to Claude.
+
+### 7.2 Send a private preview to the couple
+
+> Send a preview to the couple
+
+Claude gives you:
+
+- a **preview link**: it isn't listed anywhere, so only people you send it to will see it
+- a **proof text** listing every name, date, time and venue
+
+Send **both** on WhatsApp and ask the couple to reply **OK** or send corrections. For corrections, just tell Claude (*"Change the Haldi time to 11:30"*) and send a fresh preview.
+
+### 7.3 Set up the RSVP sheet *(once, about 10 minutes)*
+
+Guests' RSVPs go into a **Google Sheet** in your business Google account, with one tab per couple. The first time you go live, Claude walks you through creating it, click by click. After that, each new couple is just one line in the sheet.
+
+To send the list to a couple, open their tab → **File → Download → PDF** (or Excel), then send it on WhatsApp.
+
+### 7.4 Go live on your own address
+
+When the couple says OK:
+
+> Make it live
+
+Claude uploads the website, then guides you through **two short sets of clicks** (it tells you the exact words to type):
+
+**In Cloudflare:** open your project → **Custom domains** → **Set up a custom domain** → type the address (e.g. `priyaarjun.rivaahdesigns.com`) → **Continue**.
+
+**In Hostinger:**
+
+1. Go to **[hpanel.hostinger.com](https://hpanel.hostinger.com)** → **Domains** → **rivaahdesigns.com** → **DNS / Nameservers**.
+2. Add **one record**:
+
+   | Type | Name | Points to |
+   |---|---|---|
+   | **CNAME** | `priyaarjun` | `invite-priya-arjun.pages.dev` |
+
+3. Leave the other settings as they are and click **Add record**.
+
+> ⚠️ **Don't change or delete any other records** in Hostinger. They run your main website and email. Claude tells you if one specific record ever needs removing.
+
+Then **wait 5–30 minutes** (the internet needs time to learn the new address) and ask:
+
+> Is my site live?
+
+### 7.5 Test on real phones *(before telling everyone)*
+
+Check on **an iPhone and an Android**. Borrow one if needed.
+
+- ☐ Open the link. The opening screen appears and opens when you slide or tap it.
+- ☐ The music starts. **Lock the phone**: the music stops. Unlock: it comes back.
+- ☐ Scroll the whole page. Nothing is cut off, overlapping or hard to read.
+- ☐ Tap the map link. Google Maps opens at the right place.
+- ☐ Send a test RSVP. It appears in the Google Sheet (then delete your test row).
+- ☐ Send the link to yourself on **WhatsApp**. The preview shows the right picture and title.
+- ☐ Ask someone older to read it. Can they read everything easily?
+
+🎉 **Your invitation is live.** Share the link with the couple.
+
+**Changes after it's live?** Say *"Update the live site: …"*. The address stays the same. (WhatsApp may show the old preview picture for a while; that's normal.)
+
+---
+
+## Part 8 — Everyday use and help
+
+### Starting a work session
+
+Open the Claude app → **Code** → folder **`C:\Rivaah\invite-studio`**, and say **"Where were we?"**
+
+### Things you can say
+
+You can talk normally. These all work:
+
+| To… | Say | Shortcut |
+|---|---|---|
+| Start a new invitation | "New invite for …" | `/start-invite` |
+| Give or update the design | "Here's the Figma link / PDF" / "I changed the design" | `/import-design` |
+| Build the next part | "Build the next section" | `/build-section` |
+| Pick up where you left off | "Where were we?" | `/continue` |
+| See it | "Show me" / "Show me on my phone" | `/preview` |
+| Check everything | "Is it ready?" | `/check-invite` |
+| Preview, go live, update | "Send a preview to the couple" / "Make it live" | `/publish` |
+| Undo | "Undo that" / "Go back to how it was" | `/undo` |
+| Get help | "I'm stuck" | `/stuck` |
+| Learn how something works | "Teach me how the countdown works" | `/learn` |
+| Fix your setup or get updates | "Set up my computer" / "Update the tool kit" | `/setup` |
+
+### Golden rules
+
+1. **Real details only.** Names and dates always come from the couple's own message. Claude asks rather than guesses.
+2. **Nothing reaches the couple without a check,** and nothing goes live without the couple's OK.
+3. **Always test on a real phone** before telling everyone.
+4. **Start fresh sessions often.** After each finished part, or when Claude seems confused, start a new session and say "Where were we?" Nothing is lost.
+5. **If Claude tries the same fix twice, say "I'm stuck".**
+6. **Never paste passwords or keys into the chat.** When a key is needed, Claude opens Notepad for you.
+7. **Don't delete or move the `invites` folder.** It's all your work.
+
+### When something goes wrong
+
+| What you see | What to do |
+|---|---|
+| You don't like a change | "Undo that" |
+| Claude seems confused or repeats itself | Start a new session → "Where were we?" |
+| Something keeps failing | "I'm stuck". Claude writes a note; send it to your friend on WhatsApp. |
+| Claude mentions a **usage limit** | That's the Claude Pro limit. Nothing is lost: come back later and say "Where were we?" |
+| Claude says it's **not allowed** to change something | A safety lock protects the shared tool kit. Say "I'm stuck" so your friend can do it properly. |
+| "npm is not recognized" or "node is not recognized" | Node.js isn't installed, or the computer wasn't restarted. Redo [1.2](#12-nodejs-runs-the-website-tools-in-the-background) and [1.5](#15-restart-your-computer). |
+| Your phone can't open the preview link | Same Wi-Fi as the computer? Allow **Node.js** in the Windows firewall message (Private networks). |
+| The live address doesn't open yet | Wait up to 30 minutes after adding the Hostinger record, then ask "Is my site live?" |
+| Your friend says there's a new version | "Update the tool kit". Your invitations aren't affected. |
+| Your friend gives you a backup address | "Set up my online backup: <address>". Your work is copied there privately, with all its history. |
+
+### Where your things are
+
+| Folder in `C:\Rivaah\invite-studio` | What it is |
+|---|---|
+| **`invites`** | **All your work.** One folder per couple. Private. Don't delete. |
+| `examples` | The two sample invitations |
+| `docs` | The questions for couples |
+| everything else | The tool kit itself. Leave it to Claude. |
+
+### Words you'll hear
+
+| Word | In Figma terms |
+|---|---|
+| Section | A frame |
+| CSS | The design panel: colours, fonts, spacing |
+| Flexbox | Auto layout |
+| z-index | Layer order |
+| Partial / engine part | A component every invite reuses |
+| Config | The content: names, dates, venues |
+| Preview | A private link to show the couple |
+| Deploy / publish | Putting the website on the internet |
+| Commit / save | A saved version, like Figma's version history |
+| DNS / CNAME | The address-book entry that points your address at the website |
+
+### What it costs
+
+- **Claude Pro:** your monthly subscription. It has a usage limit; if you reach it, wait and continue later.
+- **Cloudflare, Git, Node.js, Chrome:** free.
+- **Figma:** the free plan works. Figma limits how often free accounts can share designs with apps. If Claude says the limit is reached, export a PDF instead.
+- **Hostinger:** your existing plan. Nothing changes there except one address record per invitation.
+
+---
+
+<sub>For the developer who maintains Invite Studio: see [docs/DEVELOPER.md](docs/DEVELOPER.md).</sub>

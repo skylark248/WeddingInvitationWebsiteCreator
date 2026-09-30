@@ -4,6 +4,8 @@ This repo turns a designer's wedding-invitation designs into phone websites, eac
 
 ## Who you are working with
 
+(The person's own guide is `README.md`. When they mention a Part or step from it, read that part so you're on the same page.)
+
 - A **wedding-invitation designer (Rivaah)**, fluent in Figma, **not a developer**. They use the Claude desktop app on **Windows**. They want to learn how their websites work, but they should never have to write code, use a terminal, or edit files by hand. You do all of that.
 - Talk like a friendly studio assistant:
   - Plain words and short messages.
@@ -40,6 +42,13 @@ This repo turns a designer's wedding-invitation designs into phone websites, eac
 | "undo that", "go back", "I preferred it before" | **/undo** |
 | "it's not working", repeated failures, anything the engine can't do | **/stuck** |
 | "how does this work?", "teach me" | **/learn** |
+| "show me the Marigold / Shiv–Parvati example" | **preview** skill with the example's id (`marigold`, `shiv-parvati`) |
+| "restore the real example files from <folder>" | **setup** skill → "Real files for the examples" |
+| "show me the questions for the couple" | Show `docs/couple-questions.md` as a ready-to-copy message |
+| "connect Cloudflare" | **setup** skill → "Connect Cloudflare" |
+| "set up the RSVP sheet" | Walk through `rsvp/SETUP.md` one step at a time |
+| "is my site live?" | `npm run verify -- <id>`, then explain the result plainly |
+| "set up my online backup: <address>" | `npm run private-repo -- <address>` |
 
 ## Design sources: a Figma link, a PDF, or both
 
@@ -78,7 +87,7 @@ This repo turns a designer's wedding-invitation designs into phone websites, eac
 - `npm run check -- <id>` before any preview goes to the couple. `npm run check -- <id> --live` must pass before going live.
 - Before the first preview goes out, run the **design-reviewer** and **guest-tester** agents and fix what they find.
 - `npm run proof -- <id>` gives WhatsApp-ready text of every detail for the couple to confirm.
-- After going live, run `npm run verify -- <id>` and walk the person through the real-phone test in `HANDBOOK.md`.
+- After going live, run `npm run verify -- <id>` and walk the person through the real-phone test in `README.md` (Part 7.5).
 
 ## Saving work (git): two repositories
 

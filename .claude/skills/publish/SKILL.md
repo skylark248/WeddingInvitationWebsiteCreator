@@ -36,7 +36,7 @@ First ask which one they want, unless it's already clear:
      - Warn them first: *"Don't change or delete any other records — they run your main website."*
      - Only delete an existing record with the same name as the subdomain, if the instructions say so.
 4. **Verify:** run `npm run verify -- <id>`. If the address isn't found yet, explain that the internet takes 5–30 minutes to learn a new address. Offer to check again later; don't loop.
-5. **Real-phone test** (from `HANDBOOK.md`) together with them, on an iPhone **and** an Android:
+5. **Real-phone test** (README Part 7.5) together with them, on an iPhone **and** an Android:
    - open the link, open the gate
    - music plays; lock the phone, the music stops; unlock, it comes back
    - scroll everything, send a test RSVP
